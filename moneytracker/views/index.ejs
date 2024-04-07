@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background: url('./working.jpeg'), grey;
+            background-size: cover;
+            ;
+            background-blend-mode: multiply;
+        }
+
+        .loginback {
+            background-color: rgba(50, 205, 50, 0.5);
+            backdrop-filter: blur(5px);
+            ;
+        }
+
+        .heading {
+            font-size: 30px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: white;
+        }
+        table {
+            font-size: 10px;
+            color:white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <% if(locals.id){%>
+            <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href=""><img src="/download.png" alt=""
+                            style="width:100px;border-radius: 50px;"> </a>
+                    <a class="navbar-brand" href="">BHARAT MONEY</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="menu">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href=""><i class="fa fa-user-circle" aria-hidden="true"></i>
+
+                                    <%= user %>, <%= lname %>
+                                </a></li>
+                            <li class="nav-item"><a class="nav-link" href="">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <%= email %>
+                                </a></li>
+                            <li class="nav-item"><form action="/logout" method="post"><button id="logout" class="btn btn-outline-light"><i class="fa fa-sign-out" aria-hidden="true"></i>
+                                Logout</button></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <%}%>
+
+                <div class="row justify-content-center bg-transparent">
+                    <div class="col-md-8 text-center p-3">
+                        <h1 class="heading">Money Tracker</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-5 bg-success">
+                        <%if(locals.id){%>
+                            <form action="/addTrans" method="post" class="needs-validation was-validated">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="id" name="id" value=<%=id %> readonly>
+                                </div>
+                                <select name="trans" id="trans" class="form-select mb-3" required>
+                                    <option selected value="">Select Transaction</option>
+                                    <option value="credit">CREDIT</option>
+                                    <option value="debit">DEBIT</option>
+                                </select>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="fa fa-inr" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="amount" name="amount" placeholder="Amount" required>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="fa fa-info-circle" aria-hidden="true"></i>nfo
+                                    </span>
+                                    <input type="text" class="form-control" id="info" name="info" required>
+                                </div>
+                                <button type="submit" class="btn btn-outline-dark" id="saveRecord">Add To
+                                    Record</button>
+                                <!-- <button type="button" class="btn btn-outline-dark" id="showRecord">Show
+                                    Record</button> -->
+                            </form>
+
+                            <%} else {%>
+                                <h1>Hello,</h1>
+                                <h5>Welcome !</h5>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, voluptatum totam
+                                    quaerat
+                                    deserunt et
+                                    harum voluptate suscipit ipsum dolorem beatae soluta laboriosam eius minus.
+                                    Voluptatibus
+                                    voluptates
+                                    in facilis, eveniet nisi ab magni distinctio mollitia assumenda autem quod iure
+                                    repellendus
+                                    laborum
+                                    eos excepturi explicabo aliquid nesciunt ullam omnis aspernatur itaque molestias!
+                                </p>
+                                <%}%>
+                    </div>
+                    <div class="col-md-8 p-3 loginback">
+                        <%if(locals.id){%>
+                            <div class="table-responsive-lg">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Transaction Id</th>
+                                            <th>Transaction Date</th>
+                                            <th>Transaction Type</th>
+                                            <th>Transaction Info</th>
+                                            <th>Transaction Amount</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <% if(record&&record.length>0){%>
+                                    <tbody>
+                                        <% record.forEach((item)=>{%>
+                                            <tr>
+                                                <td>
+                                                    <%= item._id %>
+                                                </td>
+                                                <td>
+                                                    <%= item.trans_date %>
+                                                </td>
+                                                <td>
+                                                    <%= item.tran_type %>
+                                                </td>
+                                                <td>
+                                                    <%= item.info %>
+                                                </td>
+                                                <td>
+                                                    <%= item.Amount %>
+                                                </td>
+                                                <td>
+                                                    <a href="/delete/<%= item._id %>"><i class="fa fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <%})%>
+                                    </tbody>
+                                    <%}%>
+
+                                </table>
+                                <%if(locals.id){%>
+                                    <h4>Total :<%=sum %></h4>
+                                    <%}%>
+                            </div>
+                            <%} %>
+                    </div>
+                </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+</html>
