@@ -127,6 +127,10 @@ router.post('/signup', async (req, resp) => {
             for (let i = 0; i < record.length; i++) {
                 sum = sum + record[i].Amount;
             }
+            let User = new user(exist[0]);
+            const sessionID = uuidv4();
+            setUser(sessionID, User);
+            resp.cookie("uid", sessionID);
             return resp.render('index', { user: exist[0].fname, email: exist[0].email, lname: exist[0].lname, id: exist[0]._id, record, sum });
         }
     }
